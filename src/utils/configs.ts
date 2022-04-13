@@ -4,6 +4,6 @@ import {
   } from "@apollo/client";
 
 export const client = new ApolloClient({
-    uri: "https://rickandmortyapi.com/graphql",
+    uri: process.env.REACT_APP_GRAPHQL_URL,
     cache: new InMemoryCache(),
   });

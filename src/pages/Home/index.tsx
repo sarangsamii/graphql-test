@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import CharacterItem from "components/CharacterItem";
 import { CharacterProps } from "types";
 
-const EXCHANGE_RATES = gql`
+const GET_CHARACTERS = gql`
   query AllQueries($page: Int) {
     characters(page: $page) {
       results {
@@ -17,7 +17,7 @@ const EXCHANGE_RATES = gql`
   }
 `;
 const Home: React.FC = () => {
-  const { loading, error, data } = useQuery(EXCHANGE_RATES);
+  const { loading, error, data } = useQuery(GET_CHARACTERS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
