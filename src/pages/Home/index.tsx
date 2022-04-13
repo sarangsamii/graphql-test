@@ -27,8 +27,8 @@ const Home: React.FC = () => {
   return (
     <Grid container spacing={3}>
       {data.characters.results.map(
-        ({ name, gender, status, image }: CharacterProps) => (
-          <Grid item xl={3} lg={3} md={3} sm={4} xs={12}>
+        ({ name, gender, status, image }: CharacterProps,id) => (
+          <Grid key={id} item xl={3} lg={3} md={3} sm={4} xs={12}>
             <CharacterItem
               name={name}
               gender={gender}
