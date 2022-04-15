@@ -4,7 +4,9 @@ export type ChildrenProps = {
 };
 
 export type CharacterProps = {
+  id:string;
   name: string;
+  onUpdate:(arg:{id:string,name:string})=>void;
 };
 
 
