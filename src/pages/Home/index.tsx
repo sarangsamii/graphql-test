@@ -1,44 +1,57 @@
-import { useQuery, gql } from "@apollo/client";
-import { Grid } from "@mui/material";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import { Grid, Box } from "@mui/material";
 import CharacterItem from "components/CharacterItem";
-import { CharacterProps } from "types";
+import AddDialog from "components/AddDialog";
+import { AddDialogProps, CharacterProps } from "types";
 
-const GET_CHARACTERS = gql`
-  query AllQueries($page: Int) {
-    characters(page: $page) {
-      results {
-        id
+const GET_USERS = gql`
+  query Users {
+    users {
+      id
+      name
+    }
+  }
+`;
+
+const ADD_USER = gql`
+  mutation Mutation($objects: [users_insert_input!]!) {
+    insert_users(objects: $objects) {
+      returning {
         name
-        status
-        gender
-        image
       }
     }
   }
 `;
 const Home: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_CHARACTERS);
+  const { loading, error, data } = useQuery(GET_USERS);
+  const [insert_users, states] = useMutation(ADD_USER);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (loading || states.loading) return <p>Loading...</p>;
+  if (error || states.error) return <p>Error :(</p>;
 
-  console.log(data);
+  const handleSubmit = (name: string): void => {
+    insert_users({
+      variables: {
+        objects: [
+          {
+            name,
+          },
+        ],
+      },
+    });
+  };
 
   return (
-    <Grid container spacing={3}>
-      {data.characters.results.map(
-        ({ name, gender, status, image }: CharacterProps,id:number) => (
+    <Box>
+      <AddDialog onSubmit={handleSubmit} />
+      <Grid container spacing={3}>
+        {data.users.map(({ name }: CharacterProps, id: number) => (
           <Grid key={id} item xl={3} lg={3} md={3} sm={4} xs={12}>
-            <CharacterItem
-              name={name}
-              gender={gender}
-              status={status}
-              image={image}
-            />
+            <CharacterItem name={name} />
           </Grid>
-        )
-      )}
-    </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 export default Home;

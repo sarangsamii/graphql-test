@@ -5,7 +5,10 @@ export type ChildrenProps = {
 
 export type CharacterProps = {
   name: string;
-  status: string;
-  gender: "Male" | "Female";
-  image: string;
 };
+
+
+export type AddDialogProps = {
+  onSubmit: (arg:string)=>void;
+};
+
