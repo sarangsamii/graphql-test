@@ -10,6 +10,7 @@ const GET_USERS = gql`
     users {
       id
       name
+      age @client
     }
   }
 `;
@@ -37,8 +38,6 @@ const UPDATE_USER = gql`
 `;
 const Home: React.FC = () => {
   const { loading, error, data } = useQuery(GET_USERS);
-
-  const uid: string = uuid();
  
 
   //UPDATE CASH
