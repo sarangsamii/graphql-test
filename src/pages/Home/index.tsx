@@ -2,39 +2,44 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import { Grid, Box } from "@mui/material";
 import CharacterItem from "components/CharacterItem";
 import AddDialog from "components/AddDialog";
-import { AddDialogProps, CharacterProps } from "types";
-import { v4 as uuid } from "uuid";
+import {  CharacterProps } from "types";
+//import { v4 as uuid } from "uuid";
+import { USER_FIELDS } from "utils/fragments";
+
+//STUDY DIRECTIVES
+//USING LODASH https://apis.guru/graphql-lodash/
+//https://www.onegraph.com/
 
 const GET_USERS = gql`
   query Users {
     users {
-      id
-      name
+      ...UserFields
       age @client
     }
   }
+  ${USER_FIELDS}
 `;
 
 const ADD_USER = gql`
   mutation Mutation($objects: [users_insert_input!]!) {
     insert_users(objects: $objects) {
       returning {
-        id
-        name
+       ...UserFields
       }
     }
   }
+  ${USER_FIELDS}
 `;
 
 const UPDATE_USER = gql`
   mutation Mutation($where: users_bool_exp!) {
     update_users(where: $where) {
       returning {
-        name
-        id
+        ...UserFields
       }
     }
   }
+  ${USER_FIELDS}
 `;
 const Home: React.FC = () => {
   const { loading, error, data } = useQuery(GET_USERS);
